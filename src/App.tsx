@@ -1,14 +1,14 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import { Container } from 'react-bootstrap';
+import FishChart from './charts/FishChart';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        Fish Tracker
-      </header>
-    </div>
+     <Container>
+        <h1 className='header'>Welcome to the fish tracker for WA</h1>
+        <FishChart />
+     </Container>
   );
 }
 
