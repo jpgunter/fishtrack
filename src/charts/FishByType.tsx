@@ -1,15 +1,40 @@
 import Chart from "react-google-charts";
 import { CreelData } from "../data/CreelData";
+import { FilterSelector } from "./FilterSelector";
+import { useState } from "react";
 
 interface FishByTypeProps {
     data: CreelData[];
 }
 
 export default function FishByType({data}: FishByTypeProps) {
-    const chartData = [];
-    chartData.push(["Date", "coho", "chinook", "pink"]);
-    data.forEach(element => {
-        chartData.push([element.date, element.coho, element.chinook, element.pink]);
+    const [selectedFish, setSelectedFish] = useState("all");
+
+    const chartData : any[] = [];
+    const headings = ["Date"];
+    const allSelected = selectedFish === "all";
+
+    const selectedHeadings = allSelected ? ["coho", "chinook", "pink"] : [selectedFish];
+    headings.push(...selectedHeadings);
+    chartData.push(headings);
+
+    data.forEach(creelData => {
+        let chartRow : any[] = [creelData.date];
+        switch(selectedFish){
+            case "all":
+                chartRow.push(creelData.coho, creelData.chinook, creelData.pink)
+                break;
+            case "coho":
+                chartRow.push(creelData.coho);
+                break;
+            case "chinook":
+                chartRow.push(creelData.chinook);
+                break;
+            case "pink":
+                chartRow.push(creelData.pink);
+                break;
+        }
+        chartData.push(chartRow);
     }); 
 
     const sortedChartData = chartData.sort((a,b) => {
@@ -38,8 +63,14 @@ export default function FishByType({data}: FishByTypeProps) {
         }
       };
 
+    const handleFishSelect = (value: string) => {
+        console.log("selected fish:" + value);
+        setSelectedFish(value);
+    }
 
     return (
+        <>
+        <FilterSelector values={["all","coho", "chinook", "pink"]} initialSelected="all" onSelect={handleFishSelect} />
         <Chart
             chartType={"LineChart"}
             data={chartData}
@@ -48,5 +79,6 @@ export default function FishByType({data}: FishByTypeProps) {
             legendToggle
             options={options}
         />
+        </>
     )
 }
