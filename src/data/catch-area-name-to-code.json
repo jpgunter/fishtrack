@@ -1,0 +1,182 @@
+{
+    "Ilwaco": {
+        "code": "01",
+        "coords": "46.30502, -124.03839"
+    },
+    "Seattle-Bremerton": {
+        "code": "10",
+        "coords": "47.56888, -122.51284"
+    },
+    "Tacoma-Vashon Island": {
+        "code": "11",
+        "coords": "47.34766, -122.47850"
+    },
+    "Hood Canal": {
+        "code": "12",
+        "coords": "47.46384, -122.95280"
+    },
+    "South Puget Sound": {
+        "code": "13",
+        "coords": "47.18971, -122.69154"
+    },
+    "Westport-Ocean Shores": {
+        "code": "02",
+        "coords": "46.92213, -124.13504"
+    },
+    "Willapa Bay": {
+        "code": "21",
+        "coords": "46.54257, -123.97110"
+    },
+    "Grays Harbor": {
+        "code": "22",
+        "coords": "46.95120, -123.96011"
+    },
+    "La Push": {
+        "code": "03",
+        "coords": "47.90023, -124.63766"
+    },
+    "Area 4 Eastern portion": {
+        "code": "4B",
+        "coords": "48.33434, -124.42291"
+    },
+    "Area 4 Neah Bay": {
+        "code": "04",
+        "coords": "48.350508, -124.718392"
+    },
+    "Sekiu and Pillar Point": {
+        "code": "05",
+        "coords": "48.258458, -124.121599"
+    },
+    "East juan de Fuca Strait": {
+        "code": "06",
+        "coords": "48.206558, -123.167203"
+    },
+    "Western Portion of Area 6": {
+        "code": "61",
+        "coords": "48.196489, -123.572324"
+    },
+    "Eastern portion of Area 5": {
+        "code": "62",
+        "coords": "48.224859, -123.951352"
+    },
+    "San Juan Islands": {
+        "code": "07",
+        "coords": "48.501424, -122.955542"
+    },
+    "Deception Pass, Hope Island and Skagit Bay": {
+        "code": "81",
+        "coords": "48.246143, -122.552396"
+    },
+    "Ports Susan and Gardner": {
+        "code": "82",
+        "coords": "48.136557, -122.399447"
+    },
+    "Admiralty Inlet": {
+        "code": "09",
+        "coords": "47.959833, -122.595828"
+    },
+    "Bellingham Bay": {
+        "code": "28",
+        "coords": "48.720635, -122.570082"
+    },
+    "Buoy 10 to Rocky/Tongue Line": {
+        "code": "51",
+        "coords": "46.237173, -123.876058"
+    },
+    "Canadian fishing in Canadian water": {
+        "code": "99",
+        "coords": "48.627875, -123.656650"
+    },
+    "Catch and Release area N of Meadow Pt and Pt Monroe": {
+        "code": "33",
+        "coords": "47.708750, -122.448483"
+    },
+    "Chehalis River Upriver of 101 Bridge": {
+        "code": "56",
+        "coords": "46.960062, -123.742439"
+    },
+    "Commencement Bay": {
+        "code": "34",
+        "coords": "47.291639, -122.456698"
+    },
+    "Dungeness Bay": {
+        "code": "29",
+        "coords": "48.162109, -123.150690"
+    },
+    "East Rock/Tongue Point Line": {
+        "code": "41",
+        "coords": "48.166249, -123.663708"
+    },
+    "Edmonds Public Fishing Pier": {
+        "code": "20",
+        "coords": "47.811480, -122.388926"
+    },
+    "Elliot Bay Piers": {
+        "code": "19",
+        "coords": "47.626102, -122.374585"
+    },
+    "Hood Canal North of Ayock Point ": {
+        "code": "12N",
+        "coords": "47.642473, -122.894499"
+    },
+    "Hood Canal South of Ayock Point ": {
+        "code": "12S",
+        "coords": "47.368343, -123.125211"
+    },
+    "Hoodsport Hatchery": {
+        "code": "26",
+        "coords": "47.406724, -123.138859"
+    },
+    "Inner Elliot Bay Fishery Area": {
+        "code": "17",
+        "coords": "47.590197, -122.345190"
+    },
+    "Johns River": {
+        "code": "54",
+        "coords": "46.902058004172126, -124.00278610392678"
+    },
+    "Nisqually River ": {
+        "code": "83D",
+        "coords": "47.086819307003154, -122.70498755389798"
+    },
+    "North Grays Harbor Humptulips": {
+        "code": "53",
+        "coords": "47.015975, -124.083077"
+    },
+    "Not Applicable": {
+        "code": "na",
+        "coords": "0, 0"
+    },
+    "Outer Grays Harbor East of Buoy 13 to 101 Bridge": {
+        "code": "52",
+        "coords": "46.953457, -123.966241"
+    },
+    "Quilcene Dabob Bay": {
+        "code": "30",
+        "coords": "47.740885, -122.837229"
+    },
+    "Sinclair Inlet": {
+        "code": "31",
+        "coords": "47.553594, -122.627602"
+    },
+    "Snohomish River Mouth": {
+        "code": "23",
+        "coords": "48.01865032937651, -122.1931039536148"
+    },
+    "Tulalip Terminal Area": {
+        "code": "16",
+        "coords": "48.05781202348469, -122.29552338883879"
+    },
+    "US Fishing in Canadian waters": {
+        "code": "15",
+        "coords": "0, 0"
+    },
+    "Unknown Area": {
+        "code": "uk",
+        "coords": "0, 0"
+    },
+    "Westport Boat Basin": {
+        "code": "55",
+        "coords": "46.911795044495335, -124.10805444104709"
+    }
+}
