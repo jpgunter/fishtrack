@@ -28,9 +28,18 @@ export class CreelData {
         this.pink = json.pink;
         this.fishPerAngler = (this.chinook + this.coho + this.pink) / this.anglers;
     }
+}
+
+export class CreelDataRetriever {
+    static data = this.loadData();
+    
+    public getCreelData(): CreelData[] {
+        return CreelDataRetriever.data;
+    }
 
     static loadData(): CreelData[]{
         let jsonData : CreelDataJson[] = rawData.data;
         return jsonData.map(d => new CreelData(d));
     }
+
 }
