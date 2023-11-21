@@ -2,6 +2,7 @@ import { Chart } from "react-google-charts";
 import { CreelData } from "../data/CreelData";
 import FishByType from "./FishByType";
 import FishByArea from "./FishByArea";
+import { FishMap } from "./FishMap";
 
 export default function FishChart() {
     const data: CreelData[] = CreelData.loadData();
@@ -11,6 +12,8 @@ export default function FishChart() {
             <FishByType data={data}/>
             <h2>Fish By Area (fish/angler)</h2>
             <FishByArea data={data}/>
+            <h2>Fish Map Heatmap</h2>
+            <FishMap />
         </>
     )
 }
