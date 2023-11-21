@@ -1,6 +1,11 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, GeoJSON } from 'react-leaflet'
+
+import rawGeo from '../data/marineAreas.json';
+import { GeoJsonObject } from 'geojson';
 
 export function FishMap() {
+
+    const geoData: GeoJsonObject = rawGeo as GeoJsonObject;
 
     return (
       <MapContainer center={[47.34766, -122.47850]} zoom={10} scrollWheelZoom={false} style={{ height: '400px', width: '100%' }}>
@@ -13,6 +18,7 @@ export function FishMap() {
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker>
+        <GeoJSON data={geoData} />
       </MapContainer>
     )
 }
