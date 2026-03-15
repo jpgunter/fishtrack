@@ -20,7 +20,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: fish-data-puller
-      CodeUri: fish-data-puller-lambda/
+      CodeUri: .
       Handler: handler.lambda_handler
       Policies:
         - DynamoDBWritePolicy:
