@@ -22,7 +22,7 @@ phases:
           --stack-name fish-heatmap-aggregator \
           --s3-bucket $ARTIFACT_BUCKET \
           --capabilities CAPABILITY_IAM \
-          --build-dir .aws-sam/build-heatmap \
+          --template-file .aws-sam/build-heatmap/template.yaml \
           --parameter-overrides \
               S3BucketName=$S3_BUCKET \
               DynamoDBTableName=$DYNAMODB_TABLE
@@ -34,7 +34,7 @@ phases:
           --stack-name fish-data-puller \
           --s3-bucket $ARTIFACT_BUCKET \
           --capabilities CAPABILITY_IAM \
-          --build-dir .aws-sam/build-puller \
+          --template-file .aws-sam/build-puller/template.yaml \
           --parameter-overrides \
               DynamoDBTableName=$DYNAMODB_TABLE
       # Self-update the pipeline stack
