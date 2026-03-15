@@ -13,6 +13,7 @@ phases:
 
   post_build:
     commands:
+      # Deploy the Lambda stack
       - |
         sam deploy \
           --no-confirm-changeset \
@@ -23,6 +24,16 @@ phases:
           --parameter-overrides \
               S3BucketName=$S3_BUCKET \
               DynamoDBTableName=$DYNAMODB_TABLE
+      # Self-update the pipeline stack
+      - |
+        aws cloudformation deploy \
+          --no-fail-on-empty-changeset \
+          --template-file pipeline/pipeline.yaml \
+          --stack-name fishtrack-pipeline \
+          --capabilities CAPABILITY_NAMED_IAM \
+          --parameter-overrides \
+              S3BucketName=$S3_BUCKET \
+              ArtifactBucketName=$ARTIFACT_BUCKET
 
 artifacts:
   files:

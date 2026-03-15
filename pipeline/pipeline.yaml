@@ -81,11 +81,18 @@ Resources:
                   - iam:PassRole
                   - iam:GetRole
                   - iam:CreateRole
+                  - iam:UpdateRole
+                  - iam:DeleteRole
                   - iam:AttachRolePolicy
                   - iam:DetachRolePolicy
                   - iam:PutRolePolicy
                   - iam:DeleteRolePolicy
                   - iam:GetRolePolicy
+                  - codebuild:*
+                  - codepipeline:*
+                  - codestar-connections:*
+                  - s3:CreateBucket
+                  - s3:PutLifecycleConfiguration
                   - events:*
                 Resource: "*"
 
