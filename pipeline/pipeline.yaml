@@ -1,0 +1,194 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CodePipeline for fish-heatmap-aggregator Lambda
+
+Parameters:
+  GitHubOwner:
+    Type: String
+    Default: jpgunter
+  GitHubRepo:
+    Type: String
+    Default: fishtrack
+  GitHubBranch:
+    Type: String
+    Default: master
+  S3BucketName:
+    Type: String
+    Description: S3 bucket for heatmap JSON output
+    Default: wa-fish-tracker-data
+  DynamoDBTableName:
+    Type: String
+    Default: fish-tracker
+  ArtifactBucketName:
+    Type: String
+    Description: S3 bucket for CodePipeline artifacts (will be created)
+    Default: fishtrack-artifact-bucket
+
+Resources:
+
+  # --- CodeStar connection to GitHub ---
+  GitHubConnection:
+    Type: AWS::CodeStarConnections::Connection
+    Properties:
+      ConnectionName: fishtrack-github
+      ProviderType: GitHub
+
+  # --- S3 bucket for pipeline artifacts ---
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref ArtifactBucketName
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireOldArtifacts
+            Status: Enabled
+            ExpirationInDays: 30
+
+  # --- IAM role for CodeBuild ---
+  CodeBuildRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: fishtrack-codebuild-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: CodeBuildPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:GetBucketVersioning
+                Resource:
+                  - !Sub "arn:aws:s3:::${ArtifactBucketName}"
+                  - !Sub "arn:aws:s3:::${ArtifactBucketName}/*"
+              - Effect: Allow
+                Action:
+                  - cloudformation:*
+                  - lambda:*
+                  - iam:PassRole
+                  - iam:GetRole
+                  - iam:CreateRole
+                  - iam:AttachRolePolicy
+                  - iam:DetachRolePolicy
+                  - iam:PutRolePolicy
+                  - iam:DeleteRolePolicy
+                  - iam:GetRolePolicy
+                  - events:*
+                Resource: "*"
+
+  # --- IAM role for CodePipeline ---
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: fishtrack-pipeline-role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: PipelinePolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - codestar-connections:UseConnection
+                Resource: !Ref GitHubConnection
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:GetBucketVersioning
+                Resource:
+                  - !Sub "arn:aws:s3:::${ArtifactBucketName}"
+                  - !Sub "arn:aws:s3:::${ArtifactBucketName}/*"
+              - Effect: Allow
+                Action:
+                  - codebuild:StartBuild
+                  - codebuild:BatchGetBuilds
+                Resource: !GetAtt BuildProject.Arn
+
+  # --- CodeBuild project (sam build + sam deploy) ---
+  BuildProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: fishtrack-build
+      ServiceRole: !GetAtt CodeBuildRole.Arn
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/standard:7.0
+        EnvironmentVariables:
+          - Name: S3_BUCKET
+            Value: !Ref S3BucketName
+          - Name: DYNAMODB_TABLE
+            Value: !Ref DynamoDBTableName
+          - Name: ARTIFACT_BUCKET
+            Value: !Ref ArtifactBucketName
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: pipeline/buildspec.yaml
+
+  # --- The pipeline ---
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      Name: fishtrack-pipeline
+      RoleArn: !GetAtt PipelineRole.Arn
+      ArtifactStore:
+        Type: S3
+        Location: !Ref ArtifactBucketName
+      Stages:
+        - Name: Source
+          Actions:
+            - Name: GitHub
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: CodeStarSourceConnection
+                Version: "1"
+              Configuration:
+                ConnectionArn: !Ref GitHubConnection
+                FullRepositoryId: !Sub "${GitHubOwner}/${GitHubRepo}"
+                BranchName: !Ref GitHubBranch
+                DetectChanges: true
+              OutputArtifacts:
+                - Name: SourceArtifact
+
+        - Name: BuildAndDeploy
+          Actions:
+            - Name: SamBuildDeploy
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName: !Ref BuildProject
+              InputArtifacts:
+                - Name: SourceArtifact
+
+Outputs:
+  GitHubConnectionArn:
+    Description: Complete the GitHub connection in the AWS Console before the pipeline will trigger
+    Value: !Ref GitHubConnection
+  PipelineUrl:
+    Value: !Sub "https://console.aws.amazon.com/codesuite/codepipeline/pipelines/fishtrack-pipeline/view"

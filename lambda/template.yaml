@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+
+Parameters:
+  S3BucketName:
+    Type: String
+    Description: S3 bucket where aggregated heatmap JSON files will be written
+  DynamoDBTableName:
+    Type: String
+    Default: fish-tracker
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Timeout: 300
+    MemorySize: 256
+    Environment:
+      Variables:
+        DYNAMODB_TABLE: !Ref DynamoDBTableName
+        S3_BUCKET: !Ref S3BucketName
+        S3_PREFIX: heatmap/
+
+Resources:
+  FishHeatmapAggregator:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: fish-heatmap-aggregator
+      CodeUri: .
+      Handler: handler.lambda_handler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref DynamoDBTableName
+        - S3WritePolicy:
+            BucketName: !Ref S3BucketName
+      Events:
+        DailySchedule:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 6 * * ? *)   # 6 AM UTC daily
+            Description: Daily fish catch aggregation for heatmap
+            Enabled: true
