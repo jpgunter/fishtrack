@@ -9,11 +9,12 @@ phases:
 
   build:
     commands:
-      - sam build --template-file lambda/template.yaml
+      - sam build --template-file fish-heatmap-lambda/template.yaml
+      - sam build --template-file fish-data-puller-lambda/template.yaml --build-dir .aws-sam/build-puller
 
   post_build:
     commands:
-      # Deploy the Lambda stack
+      # Deploy the heatmap aggregator Lambda stack
       - |
         sam deploy \
           --no-confirm-changeset \
@@ -23,6 +24,17 @@ phases:
           --capabilities CAPABILITY_IAM \
           --parameter-overrides \
               S3BucketName=$S3_BUCKET \
+              DynamoDBTableName=$DYNAMODB_TABLE
+      # Deploy the data puller Lambda stack
+      - |
+        sam deploy \
+          --no-confirm-changeset \
+          --no-fail-on-empty-changeset \
+          --stack-name fish-data-puller \
+          --s3-bucket $ARTIFACT_BUCKET \
+          --capabilities CAPABILITY_IAM \
+          --build-dir .aws-sam/build-puller \
+          --parameter-overrides \
               DynamoDBTableName=$DYNAMODB_TABLE
       # Self-update the pipeline stack
       - |
