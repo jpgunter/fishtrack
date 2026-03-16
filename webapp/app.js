@@ -1,5 +1,5 @@
 // ── Config ────────────────────────────────────────────────────────────────────
-const S3_BASE_URL = 'https://wa-fish-tracker-data-public.s3.amazonaws.com/heatmap';
+const S3_BASE_URL = 'https://wa-fish-tracker-data-public.s3.us-west-2.amazonaws.com/heatmap';
 const GEOJSON_URL = 'marine_areas.geojson';
 const PLAY_INTERVAL_MS = 800;
 
