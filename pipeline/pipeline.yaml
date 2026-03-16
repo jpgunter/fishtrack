@@ -14,7 +14,7 @@ Parameters:
   S3BucketName:
     Type: String
     Description: S3 bucket for heatmap JSON output
-    Default: wa-fish-tracker-data
+    Default: wa-fish-tracker-data-public
   DynamoDBTableName:
     Type: String
     Default: fish-tracker

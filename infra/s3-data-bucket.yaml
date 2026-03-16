@@ -5,7 +5,7 @@ Resources:
   FishTrackerDataBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: wa-fish-tracker-data
+      BucketName: wa-fish-tracker-data-public
       CorsConfiguration:
         CorsRules:
           - AllowedOrigins:
@@ -32,10 +32,10 @@ Resources:
             Effect: Allow
             Principal: "*"
             Action: s3:GetObject
-            Resource: !Sub "arn:aws:s3:::wa-fish-tracker-data/heatmap/*"
+            Resource: !Sub "arn:aws:s3:::wa-fish-tracker-data-public/*"
 
 Outputs:
   BucketName:
     Value: !Ref FishTrackerDataBucket
   BucketUrl:
-    Value: !Sub "https://wa-fish-tracker-data.s3.amazonaws.com"
+    Value: "https://wa-fish-tracker-data-public.s3.amazonaws.com"
