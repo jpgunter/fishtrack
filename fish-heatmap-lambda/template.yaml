@@ -28,10 +28,17 @@ Resources:
       CodeUri: .
       Handler: handler.lambda_handler
       Policies:
-        - DynamoDBReadPolicy:
-            TableName: !Ref DynamoDBTableName
-        - S3WritePolicy:
-            BucketName: !Ref S3BucketName
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:Scan
+                - dynamodb:GetItem
+                - dynamodb:Query
+              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${DynamoDBTableName}"
+            - Effect: Allow
+              Action:
+                - s3:PutObject
+              Resource: !Sub "arn:aws:s3:::${S3BucketName}/*"
       Events:
         DailySchedule:
           Type: Schedule

@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: S3 bucket for WA fish tracker heatmap data
+
+Resources:
+  FishTrackerDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: wa-fish-tracker-data
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - "*"
+            AllowedMethods:
+              - GET
+            AllowedHeaders:
+              - "*"
+            MaxAge: 3600
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+
+  FishTrackerDataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FishTrackerDataBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: PublicReadHeatmapData
+            Effect: Allow
+            Principal: "*"
+            Action: s3:GetObject
+            Resource: !Sub "arn:aws:s3:::wa-fish-tracker-data/heatmap/*"
+
+Outputs:
+  BucketName:
+    Value: !Ref FishTrackerDataBucket
+  BucketUrl:
+    Value: !Sub "https://wa-fish-tracker-data.s3.amazonaws.com"

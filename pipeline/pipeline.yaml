@@ -83,6 +83,9 @@ Resources:
                   - iam:CreateRole
                   - iam:UpdateRole
                   - iam:DeleteRole
+                  - iam:TagRole
+                  - iam:UntagRole
+                  - iam:TagPolicy
                   - iam:AttachRolePolicy
                   - iam:DetachRolePolicy
                   - iam:PutRolePolicy
@@ -93,6 +96,13 @@ Resources:
                   - codestar-connections:*
                   - s3:CreateBucket
                   - s3:PutLifecycleConfiguration
+                  - s3:PutBucketCORS
+                  - s3:PutBucketPolicy
+                  - s3:PutBucketPublicAccessBlock
+                  - s3:GetBucketPolicy
+                  - s3:GetBucketCORS
+                  - s3:GetBucketPublicAccessBlock
+                  - s3:DeleteBucketPolicy
                   - events:*
                 Resource: "*"
 

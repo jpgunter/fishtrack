@@ -23,8 +23,13 @@ Resources:
       CodeUri: .
       Handler: handler.lambda_handler
       Policies:
-        - DynamoDBWritePolicy:
-            TableName: !Ref DynamoDBTableName
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:PutItem
+                - dynamodb:BatchWriteItem
+                - dynamodb:UpdateItem
+              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${DynamoDBTableName}"
       Events:
         DailySchedule:
           Type: Schedule

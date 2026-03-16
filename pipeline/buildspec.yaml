@@ -14,6 +14,12 @@ phases:
 
   post_build:
     commands:
+      # Deploy the S3 data bucket and its permissions
+      - |
+        aws cloudformation deploy \
+          --no-fail-on-empty-changeset \
+          --template-file infra/s3-data-bucket.yaml \
+          --stack-name fish-tracker-data-bucket
       # Deploy the heatmap aggregator Lambda stack
       - |
         sam deploy \
