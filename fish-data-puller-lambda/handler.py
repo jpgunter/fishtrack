@@ -6,6 +6,7 @@ def lambda_handler(event, context):
     from datetime import datetime
     from dateutil.parser import parse
     from decimal import Decimal
+    from io import StringIO
     import boto3
     import pandas as pd
     
@@ -21,7 +22,7 @@ def lambda_handler(event, context):
     	for table in page_soup.find_all('table'):
     		date_str = table.caption.string
     		date = parse(date_str)
-    		df = pd.read_html(str(table))[0]
+    		df = pd.read_html(StringIO(str(table)))[0]
     
     		item = {}
     		item['PK'] = marine_area
